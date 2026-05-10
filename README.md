@@ -7,7 +7,7 @@ Curated cybersecurity work across academic, internship, and independent projects
 ## Featured Projects
 
 **Identity and Access Management**
-- [NFL-RBAC-AD](https://github.com/TheMDBritt/NFL-RBAC-AD): Active Directory RBAC and PAM with AGDLP nesting and tiered privileged access
+- [NFL-RBAC-AD](https://github.com/TheMDBritt/Cyber-Labs/tree/main/NFL-RBAC-AD): Active Directory RBAC and PAM with AGDLP nesting and tiered privileged access
 - [okta](https://github.com/TheMDBritt/okta): Live Okta org with custom user types, CSV Directory provisioning, and group-rule-driven JML
 
 **AI Security**
