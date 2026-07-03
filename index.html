@@ -25,6 +25,7 @@
       <a href="#overview">Overview</a>
       <a href="#lab">Lab</a>
       <a href="#threats">Threats</a>
+      <a href="#sandbox">Sandbox</a>
       <a href="#results">Results</a>
       <a href="#attack">ATT&amp;CK</a>
       <a href="#contact">Contact</a>
@@ -208,10 +209,140 @@
       </div>
     </section>
 
+    <!-- ============ SANDBOX ============ -->
+    <section class="section section--dark" id="sandbox">
+      <div class="section__head">
+        <span class="section__index mono">04</span>
+        <h2 class="section__title">The Sandbox</h2>
+      </div>
+      <p class="section__intro">
+        A live, in-browser recreation of the simulated sportsbook and the three attack campaigns.
+        Log in, place a bet, then run the attacks against it — and flip the security posture to feel
+        the difference between the baseline build and the enhanced, layered defense.
+      </p>
+
+      <div class="sandbox">
+        <!-- posture toggle -->
+        <div class="posture">
+          <span class="posture__label">Security posture</span>
+          <label class="switch">
+            <input type="checkbox" id="posture-toggle" aria-label="Toggle enhanced security posture">
+            <span class="switch__track"><span class="switch__thumb"></span></span>
+            <span class="switch__state mono" id="posture-state">BASELINE</span>
+          </label>
+          <div class="posture__flags" id="posture-flags" aria-live="polite">
+            <span class="flag flag--off">MFA OFF</span>
+            <span class="flag flag--off">IDS OFF</span>
+            <span class="flag flag--off">FRAUD: BASIC</span>
+          </div>
+        </div>
+
+        <!-- tabs -->
+        <div class="tabs" role="tablist" aria-label="Sandbox modules">
+          <button class="tab" role="tab" id="tab-book" aria-selected="true" aria-controls="panel-book">🏈 Sportsbook</button>
+          <button class="tab" role="tab" id="tab-cred" aria-selected="false" aria-controls="panel-cred">① Credential Stuffing</button>
+          <button class="tab" role="tab" id="tab-net" aria-selected="false" aria-controls="panel-net">② Network Intrusion</button>
+          <button class="tab" role="tab" id="tab-fraud" aria-selected="false" aria-controls="panel-fraud">③ Transaction Fraud</button>
+        </div>
+
+        <!-- PANEL: SPORTSBOOK -->
+        <div class="tabpanel" role="tabpanel" id="panel-book" aria-labelledby="tab-book">
+          <p class="tabpanel__lead">
+            This is <strong>StakeLine</strong> — the simulated sportsbook every attack below targets.
+            Log in as the legitimate user, place a wager, and watch your wallet. Credentials are shown
+            for you (in the real study these lived in an encrypted store).
+          </p>
+          <div id="book-root"></div>
+          <details class="artifact">
+            <summary>View the auth logic</summary>
+            <pre><span class="c"># StakeLine auth — password + optional TOTP second factor</span>
+<span class="k">def</span> authenticate(user, password, otp=None):
+    record = db.get_user(user)
+    <span class="k">if</span> <span class="k">not</span> record <span class="k">or</span> <span class="k">not</span> bcrypt.verify(password, record.hash):
+        <span class="k">return</span> Deny(<span class="s">"bad_credentials"</span>)
+    <span class="k">if</span> record.mfa_enabled:                 <span class="c"># enhanced posture only</span>
+        <span class="k">if</span> <span class="k">not</span> otp <span class="k">or</span> <span class="k">not</span> totp.verify(record.secret, otp):
+            <span class="k">return</span> Deny(<span class="s">"mfa_required"</span>)   <span class="c"># stolen password is not enough</span>
+    <span class="k">return</span> Grant(session=new_session(record))</pre>
+          </details>
+        </div>
+
+        <!-- PANEL: CREDENTIAL STUFFING -->
+        <div class="tabpanel" role="tabpanel" id="panel-cred" aria-labelledby="tab-cred" hidden>
+          <p class="tabpanel__lead">
+            <strong>Campaign 1 — Credential Stuffing &amp; Account Takeover.</strong>
+            Hydra + a Python loop replay a breached credential list against StakeLine's login.
+            Run one stolen credential by hand, or launch the full 10,000-attempt campaign.
+            <em>Toggle the posture and watch MFA collapse the success rate.</em>
+          </p>
+          <div id="cred-root"></div>
+          <details class="artifact">
+            <summary>View the attack script</summary>
+            <pre><span class="c"># credential stuffing — replay breach dump against /login</span>
+hydra -C breach_dump.txt stakeline.sim http-post-form \
+  <span class="s">"/login:user=^USER^&pass=^PASS^:F=bad_credentials"</span>
+
+<span class="k">for</span> user, password <span class="k">in</span> load(<span class="s">"breach_dump.txt"</span>):
+    r = session.post(LOGIN, data={<span class="s">"user"</span>: user, <span class="s">"pass"</span>: password})
+    <span class="k">if</span> <span class="s">"mfa_required"</span> <span class="k">in</span> r.text:
+        log.blocked(user)          <span class="c"># password valid, second factor stops it</span>
+    <span class="k">elif</span> r.ok:
+        log.compromised(user)      <span class="c"># baseline: account takeover</span></pre>
+          </details>
+        </div>
+
+        <!-- PANEL: NETWORK INTRUSION -->
+        <div class="tabpanel" role="tabpanel" id="panel-net" aria-labelledby="tab-net" hidden>
+          <p class="tabpanel__lead">
+            <strong>Campaign 2 — Network Intrusion.</strong>
+            A fixed kill chain — reconnaissance, probing, exploitation — runs against the platform's
+            network layer. With the enhanced posture, Snort/Suricata feed a SIEM that catches more
+            and catches it faster. Watch the mean-time-to-detect clock.
+          </p>
+          <div id="net-root"></div>
+          <details class="artifact">
+            <summary>View the IDS rule</summary>
+            <pre><span class="c"># Snort rule — flag rapid port sweep (reconnaissance)</span>
+alert tcp $EXTERNAL_NET any -> $HOME_NET any ( \
+  msg:<span class="s">"RECON aggressive port scan"</span>; flags:S; \
+  detection_filter:track by_src, count 20, seconds 5; \
+  classtype:attempted-recon; sid:1000021; rev:1; )
+
+<span class="c"># SIEM correlation: recon + probe + exploit from one src -> critical alert</span></pre>
+          </details>
+        </div>
+
+        <!-- PANEL: TRANSACTION FRAUD -->
+        <div class="tabpanel" role="tabpanel" id="panel-fraud" aria-labelledby="tab-fraud" hidden>
+          <p class="tabpanel__lead">
+            <strong>Campaign 3 — Transaction Fraud.</strong>
+            Compose a withdrawal and score it. The baseline model only checks a static amount
+            threshold; the enhanced anomaly model weighs device, location, velocity, and timing.
+            Load a preset or run the full labeled batch to see accuracy and false-positive rate.
+          </p>
+          <div id="fraud-root"></div>
+          <details class="artifact">
+            <summary>View the scoring model</summary>
+            <pre><span class="c"># anomaly-based fraud score (enhanced) vs static threshold (baseline)</span>
+<span class="k">def</span> score(txn, model):
+    <span class="k">if</span> model == <span class="s">"baseline"</span>:
+        <span class="k">return</span> 100 <span class="k">if</span> txn.amount &gt; 2000 <span class="k">else</span> 0
+    s  = 0.006 * min(txn.amount, 5000)     <span class="c"># amount alone can't flag</span>
+    s += 25 <span class="k">if</span> txn.new_device <span class="k">else</span> 0        <span class="c"># unrecognized device</span>
+    s += 22 <span class="k">if</span> txn.geo_jump   <span class="k">else</span> 0        <span class="c"># impossible travel</span>
+    s += 20 <span class="k">if</span> txn.rapid_repeat <span class="k">else</span> 0     <span class="c"># withdrawal velocity</span>
+    s += 14 <span class="k">if</span> txn.odd_hour <span class="k">else</span> 0          <span class="c"># 2-5am activity</span>
+    s += 16 <span class="k">if</span> txn.new_account <span class="k">else</span> 0      <span class="c"># thin account history</span>
+    <span class="k">return</span> min(s, 100)                       <span class="c"># flag when &gt;= 60</span></pre>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ RESULTS ============ -->
     <section class="section section--dark" id="results">
       <div class="section__head">
-        <span class="section__index mono">04</span>
+        <span class="section__index mono">05</span>
         <h2 class="section__title">The Scoreboard</h2>
       </div>
       <p class="section__intro">
@@ -281,7 +412,7 @@
     <!-- ============ ATT&CK ============ -->
     <section class="section" id="attack">
       <div class="section__head">
-        <span class="section__index mono">05</span>
+        <span class="section__index mono">06</span>
         <h2 class="section__title">ATT&amp;CK Map</h2>
       </div>
       <p class="section__intro">
@@ -294,7 +425,7 @@
     <!-- ============ NIST ============ -->
     <section class="section section--accent" id="nist">
       <div class="section__head">
-        <span class="section__index mono">06</span>
+        <span class="section__index mono">07</span>
         <h2 class="section__title">NIST CSF Alignment</h2>
       </div>
       <div class="nist">
@@ -320,7 +451,7 @@
     <!-- ============ TAKEAWAYS ============ -->
     <section class="section" id="takeaways">
       <div class="section__head">
-        <span class="section__index mono">07</span>
+        <span class="section__index mono">08</span>
         <h2 class="section__title">What It Proves</h2>
       </div>
       <ol class="takeaways">
@@ -361,5 +492,6 @@
 
   <div class="tooltip mono" id="tooltip" role="tooltip" hidden></div>
   <script src="assets/main.js"></script>
+  <script src="assets/sandbox.js"></script>
 </body>
 </html>
