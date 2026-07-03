@@ -1,0 +1,24 @@
+# Simulated breached-credential dump for the credential-stuffing lab.
+# Format: username:password (one per line). Synthetic data only — no real
+# credentials. A subset intentionally matches seeded StakeLine accounts so the
+# baseline build produces takeovers and the enhanced build does not.
+mbritt:Str0ngPass!
+highroller:letmein
+ksmith:password1
+jdoe22:summer2023
+mbritt:hunter2
+mbritt:Password123
+highroller:qwerty
+jdoe22:iloveyou
+ksmith:12345678
+lchen:letmein
+guest:guest
+admin:admin
+bettor01:football
+bettor02:changeme
+mbritt:Str0ngPass1
+sample:sample
+test:test123
+user:welcome1
+player7:baseball
+vipuser:money2024

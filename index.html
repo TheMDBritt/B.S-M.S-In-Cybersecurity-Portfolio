@@ -221,6 +221,16 @@
         the difference between the baseline build and the enhanced, layered defense.
       </p>
 
+      <div class="kit-callout">
+        <div>
+          <span class="kit-callout__tag mono">RUNNABLE LAB KIT</span>
+          <p>Everything below is backed by real, executable code — the Flask sportsbook target, the
+          credential-stuffing and fraud-injection scripts, Snort/Suricata rules, and the Elastic SIEM
+          queries. Clone it and reproduce the results end to end.</p>
+        </div>
+        <a class="btn btn--accent" href="https://github.com/TheMDBritt/B.S-M.S-In-Cybersecurity-Portfolio/tree/main/labs" target="_blank" rel="noopener">Browse the lab kit ↗</a>
+      </div>
+
       <div class="sandbox">
         <!-- posture toggle -->
         <div class="posture">
@@ -264,6 +274,7 @@
         <span class="k">if</span> <span class="k">not</span> otp <span class="k">or</span> <span class="k">not</span> totp.verify(record.secret, otp):
             <span class="k">return</span> Deny(<span class="s">"mfa_required"</span>)   <span class="c"># stolen password is not enough</span>
     <span class="k">return</span> Grant(session=new_session(record))</pre>
+            <a class="artifact__src mono" href="https://github.com/TheMDBritt/B.S-M.S-In-Cybersecurity-Portfolio/blob/main/labs/sportsbook/auth.py" target="_blank" rel="noopener">→ full source: labs/sportsbook/auth.py</a>
           </details>
         </div>
 
@@ -288,6 +299,7 @@ hydra -C breach_dump.txt stakeline.sim http-post-form \
         log.blocked(user)          <span class="c"># password valid, second factor stops it</span>
     <span class="k">elif</span> r.ok:
         log.compromised(user)      <span class="c"># baseline: account takeover</span></pre>
+            <a class="artifact__src mono" href="https://github.com/TheMDBritt/B.S-M.S-In-Cybersecurity-Portfolio/blob/main/labs/attacks/credential_stuffing.py" target="_blank" rel="noopener">→ full source: labs/attacks/credential_stuffing.py</a>
           </details>
         </div>
 
@@ -309,6 +321,7 @@ alert tcp $EXTERNAL_NET any -> $HOME_NET any ( \
   classtype:attempted-recon; sid:1000021; rev:1; )
 
 <span class="c"># SIEM correlation: recon + probe + exploit from one src -> critical alert</span></pre>
+            <a class="artifact__src mono" href="https://github.com/TheMDBritt/B.S-M.S-In-Cybersecurity-Portfolio/blob/main/labs/detection/snort.rules" target="_blank" rel="noopener">→ full source: labs/detection/snort.rules + suricata.rules</a>
           </details>
         </div>
 
@@ -334,6 +347,7 @@ alert tcp $EXTERNAL_NET any -> $HOME_NET any ( \
     s += 14 <span class="k">if</span> txn.odd_hour <span class="k">else</span> 0          <span class="c"># 2-5am activity</span>
     s += 16 <span class="k">if</span> txn.new_account <span class="k">else</span> 0      <span class="c"># thin account history</span>
     <span class="k">return</span> min(s, 100)                       <span class="c"># flag when &gt;= 60</span></pre>
+            <a class="artifact__src mono" href="https://github.com/TheMDBritt/B.S-M.S-In-Cybersecurity-Portfolio/blob/main/labs/sportsbook/fraud.py" target="_blank" rel="noopener">→ full source: labs/sportsbook/fraud.py</a>
           </details>
         </div>
       </div>
@@ -478,7 +492,7 @@ alert tcp $EXTERNAL_NET any -> $HOME_NET any ( \
       <h2 class="footer__title">Let's<br>Talk<span class="footer__dot">.</span></h2>
       <div class="footer__links">
         <a class="footer__link" href="mailto:malcolmbritt12@gmail.com">malcolmbritt12@gmail.com ↗</a>
-        <a class="footer__link" href="https://www.linkedin.com/in/malcolm-britt-b7157026a" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="footer__link" href="https://www.linkedin.com/in/malcolm-b-b7157026a/" target="_blank" rel="noopener">LinkedIn ↗</a>
         <a class="footer__link" href="https://github.com/TheMDBritt" target="_blank" rel="noopener">GitHub ↗</a>
         <a class="footer__link" href="assets/An-Analysis-of-Cybersecurity-Measures-in-Sports-Betting-Platforms.docx" download>Download the full paper ↓</a>
       </div>

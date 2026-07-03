@@ -1,0 +1,36 @@
+# =============================================================================
+# StakeLine IDS ruleset — Suricata 7.0
+# Suricata-native equivalents of the Snort rules, using flowint counters and
+# app-layer HTTP keywords. Loaded via suricata.yaml default-rule-path.
+# =============================================================================
+
+# --- Reconnaissance: rapid distinct-port SYNs from one source ----------------
+alert tcp $EXTERNAL_NET any -> $HOME_NET any ( \
+    msg:"STAKELINE RECON port scan"; \
+    flags:S; flow:to_server; \
+    threshold:type both, track by_src, count 20, seconds 5; \
+    classtype:attempted-recon; sid:2000021; rev:1; )
+
+# --- Credential stuffing: login POST rate from one source (T1110) ------------
+alert http $EXTERNAL_NET any -> $HOME_NET any ( \
+    msg:"STAKELINE credential stuffing login flood"; \
+    flow:to_server,established; \
+    http.method; content:"POST"; \
+    http.uri; content:"/login"; \
+    threshold:type threshold, track by_src, count 30, seconds 10; \
+    classtype:web-application-attack; sid:2000022; rev:1; )
+
+# --- Probing: HTTP enumeration user-agent / script scanners ------------------
+alert http $EXTERNAL_NET any -> $HOME_NET any ( \
+    msg:"STAKELINE probe - enumeration scanner user-agent"; \
+    flow:to_server,established; \
+    http.user_agent; pcre:"/(nmap|nikto|gobuster|dirb)/i"; \
+    classtype:web-application-attack; sid:2000023; rev:1; )
+
+# --- Exploitation: abnormal oversized login body -----------------------------
+alert http $EXTERNAL_NET any -> $HOME_NET any ( \
+    msg:"STAKELINE exploit - abnormal login request length"; \
+    flow:to_server,established; \
+    http.uri; content:"/login"; \
+    http.request_body; bsize:>4096; \
+    classtype:web-application-attack; sid:2000024; rev:1; )
