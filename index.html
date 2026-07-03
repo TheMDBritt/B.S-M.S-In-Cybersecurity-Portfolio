@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malcolm D. Britt — Cybersecurity in Sports Betting Platforms</title>
+  <meta name="description" content="M.S. Cybersecurity capstone by Malcolm D. Britt: quantifying how MFA, IDS, and fraud monitoring harden online sports betting platforms. 93% reduction in account compromise, MTTD cut from 14 to 3 minutes.">
+  <meta property="og:title" content="Malcolm D. Britt — Cybersecurity in Sports Betting Platforms">
+  <meta property="og:description" content="A layered-defense capstone study: MFA, IDS + SIEM, and fraud monitoring tested against credential stuffing, intrusion, and fraudulent transactions.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230D0D0D'/><rect x='14' y='14' width='72' height='72' fill='%23E62E00'/><text x='50' y='68' font-size='48' font-family='Arial Black,sans-serif' font-weight='900' fill='%230D0D0D' text-anchor='middle'>MB</text></svg>">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#overview">Skip to content</a>
+
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <a class="topbar__brand" href="#top">MB<span class="topbar__brand-dot">.</span>SEC</a>
+    <nav class="topbar__nav" aria-label="Main navigation">
+      <a href="#overview">Overview</a>
+      <a href="#lab">Lab</a>
+      <a href="#threats">Threats</a>
+      <a href="#results">Results</a>
+      <a href="#attack">ATT&amp;CK</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="topbar__cta" href="assets/An-Analysis-of-Cybersecurity-Measures-in-Sports-Betting-Platforms.docx" download>Full paper ↓</a>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-label="Introduction">
+      <div class="hero__inner">
+        <p class="hero__kicker mono">M.S. Cybersecurity Capstone — Norfolk State University — Nov 2025</p>
+        <h1 class="hero__title">
+          <span class="hero__line">Cybersecurity</span>
+          <span class="hero__line">in <em>Sports Betting</em></span>
+          <span class="hero__line">Platforms<span class="hero__cursor" aria-hidden="true">_</span></span>
+        </h1>
+        <p class="hero__sub">
+          Protecting user data and financial transactions in a high-stakes industry.
+          A simulated sportsbook, three attack campaigns, and hard numbers on what
+          <strong>layered defense</strong> actually buys you.
+        </p>
+        <p class="hero__byline mono">
+          by <strong>Malcolm D. Britt</strong> — B.S. Cybersecurity, Old Dominion University ·
+          M.S. Cybersecurity, Norfolk State University
+        </p>
+
+        <div class="terminal" role="img" aria-label="Terminal readout summarizing the experiment: five virtual machines, three threat scenarios, MFA IDS and fraud monitoring engaged, verdict: layered defense holds.">
+          <div class="terminal__bar" aria-hidden="true">
+            <span class="terminal__dot"></span><span class="terminal__dot"></span><span class="terminal__dot"></span>
+            <span class="terminal__title mono">malcolm@sportsbook-sim: ~/capstone</span>
+          </div>
+          <pre class="terminal__body mono" id="terminal-output" aria-hidden="true"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TICKER ============ -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track mono" id="ticker-track">
+        <span>Account compromise −93%</span><span>◆</span>
+        <span>MTTD 14 min → 3 min</span><span>◆</span>
+        <span>IDS detection 54% → 89%</span><span>◆</span>
+        <span>Fraud accuracy 68% → 92%</span><span>◆</span>
+        <span>10,000 credential attempts per trial</span><span>◆</span>
+        <span>NIST CSF aligned</span><span>◆</span>
+        <span>MITRE ATT&amp;CK mapped</span><span>◆</span>
+      </div>
+    </div>
+
+    <!-- ============ OVERVIEW ============ -->
+    <section class="section" id="overview">
+      <div class="section__head">
+        <span class="section__index mono">01</span>
+        <h2 class="section__title">The Study</h2>
+      </div>
+      <div class="overview">
+        <div class="overview__text">
+          <p class="lede">
+            Online sportsbooks are financial systems wearing a sports jersey: they hold user
+            funds, verify identity, and settle thousands of real-money transactions in real time.
+            That makes them a prime target for <strong>credential stuffing, account takeover,
+            network intrusion, and transaction fraud</strong>.
+          </p>
+          <p>
+            This capstone built a complete simulated sportsbook — login interface, betting engine,
+            encrypted database, monitoring stack — and ran identical attack campaigns against two
+            configurations: a <strong class="ink-baseline">baseline</strong> (passwords + basic firewall) and an
+            <strong class="ink-enhanced">enhanced</strong> build (MFA + IDS/SIEM + encryption + fraud monitoring).
+            Every scenario ran three times under fixed conditions for reproducibility, and every
+            result maps to <strong>NIST CSF</strong> functions and <strong>MITRE ATT&amp;CK</strong> techniques.
+          </p>
+          <p>
+            The verdict: no single control is enough. Layered defense transformed the platform's
+            security posture across every metric measured.
+          </p>
+        </div>
+        <div class="overview__facts">
+          <h3 class="overview__facts-title mono">At a glance</h3>
+          <dl class="factlist">
+            <div class="factlist__row"><dt>Virtual machines</dt><dd class="mono">5</dd></div>
+            <div class="factlist__row"><dt>Threat scenarios</dt><dd class="mono">3</dd></div>
+            <div class="factlist__row"><dt>Trials per scenario</dt><dd class="mono">3</dd></div>
+            <div class="factlist__row"><dt>Login attempts / trial</dt><dd class="mono">10,000</dd></div>
+            <div class="factlist__row"><dt>ATT&amp;CK techniques</dt><dd class="mono">7</dd></div>
+            <div class="factlist__row"><dt>Configurations tested</dt><dd class="mono">2</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAB ============ -->
+    <section class="section section--dark" id="lab">
+      <div class="section__head">
+        <span class="section__index mono">02</span>
+        <h2 class="section__title">The Lab</h2>
+      </div>
+      <p class="section__intro">
+        A segmented virtual network with synchronized clocks — each subsystem isolated in its own VM
+        so attacks could be executed and measured without outside interference.
+      </p>
+
+      <div class="archflow" aria-label="Network architecture: user access flows to the application server, then to the database server; the security monitoring and logging servers observe all three tiers.">
+        <div class="archflow__tier">
+          <span class="archflow__label mono">User Access</span>
+          <span class="archflow__os">Windows 10</span>
+        </div>
+        <span class="archflow__arrow" aria-hidden="true">→</span>
+        <div class="archflow__tier">
+          <span class="archflow__label mono">App Server</span>
+          <span class="archflow__os">Ubuntu 22 · auth + betting engine</span>
+        </div>
+        <span class="archflow__arrow" aria-hidden="true">→</span>
+        <div class="archflow__tier">
+          <span class="archflow__label mono">Database</span>
+          <span class="archflow__os">Ubuntu 22 · encrypted store</span>
+        </div>
+        <div class="archflow__monitor">
+          <span class="archflow__label mono">▲ IDS · SIEM · Logging</span>
+          <span class="archflow__os">Kali Linux + Ubuntu 20 — watching every tier</span>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="btable">
+          <caption class="sr-only">Virtual machine specifications for the simulated sportsbook</caption>
+          <thead>
+            <tr><th scope="col">Component</th><th scope="col">OS</th><th scope="col">Specs</th><th scope="col">Role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>User Access VM</td><td class="mono">Windows 10</td><td class="mono">2 vCPU / 4 GB</td><td>Login interface + browser client</td></tr>
+            <tr><td>Application Server</td><td class="mono">Ubuntu 22</td><td class="mono">4 vCPU / 8 GB</td><td>Authentication + betting engine</td></tr>
+            <tr><td>Database Server</td><td class="mono">Ubuntu 22</td><td class="mono">4 vCPU / 8 GB</td><td>Encrypted credentials + transactions</td></tr>
+            <tr><td>Security Monitoring</td><td class="mono">Kali Linux</td><td class="mono">4 vCPU / 8 GB</td><td>IDS, SIEM, attack execution</td></tr>
+            <tr><td>Logging Server</td><td class="mono">Ubuntu 20</td><td class="mono">2 vCPU / 4 GB</td><td>Central log aggregation</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-title mono">// Toolchain</h3>
+      <ul class="chips" aria-label="Security tools and versions">
+        <li class="chip mono">Hydra v9.4</li>
+        <li class="chip mono">Python 3.11</li>
+        <li class="chip mono">OpenSSL 3.0</li>
+        <li class="chip mono">Snort 2.9</li>
+        <li class="chip mono">Suricata 7.0</li>
+        <li class="chip mono">Elastic SIEM 8.x</li>
+      </ul>
+    </section>
+
+    <!-- ============ THREATS ============ -->
+    <section class="section" id="threats">
+      <div class="section__head">
+        <span class="section__index mono">03</span>
+        <h2 class="section__title">The Attacks</h2>
+      </div>
+      <p class="section__intro">
+        Three campaigns, each run against both configurations — first with passwords and a firewall,
+        then with the full layered stack.
+      </p>
+      <div class="threats">
+        <article class="threat">
+          <span class="threat__num" aria-hidden="true">1</span>
+          <h3 class="threat__name">Credential Stuffing &amp; Account Takeover</h3>
+          <p>10,000 automated login attempts per trial using breached-style credential lists, driven by Hydra and custom Python — measuring compromise rate with and without MFA.</p>
+          <p class="threat__tags mono">T1078 · T1110 · T1098</p>
+        </article>
+        <article class="threat">
+          <span class="threat__num" aria-hidden="true">2</span>
+          <h3 class="threat__name">Network Intrusion</h3>
+          <p>A fixed kill-chain of reconnaissance scans, packet probing, and exploitation attempts against the network layer — with Snort/Suricata and Elastic SIEM watching.</p>
+          <p class="threat__tags mono">T1595 · T1539 · T1041</p>
+        </article>
+        <article class="threat">
+          <span class="threat__num" aria-hidden="true">3</span>
+          <h3 class="threat__name">Fraudulent Transactions</h3>
+          <p>Payout manipulation and duplicate-withdrawal injection against the betting engine, scored by an anomaly-based fraud detection model on wager and payout behavior.</p>
+          <p class="threat__tags mono">T1565</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section class="section section--dark" id="results">
+      <div class="section__head">
+        <span class="section__index mono">04</span>
+        <h2 class="section__title">The Scoreboard</h2>
+      </div>
+      <p class="section__intro">
+        Identical attacks, two configurations. Every number below is the mean of three trials.
+      </p>
+
+      <div class="bigstats">
+        <div class="bigstat">
+          <span class="bigstat__value mono"><span class="count" data-count="93">0</span>%</span>
+          <span class="bigstat__label">reduction in account compromise with MFA</span>
+        </div>
+        <div class="bigstat">
+          <span class="bigstat__value mono"><span class="count" data-count="11">0</span><span class="bigstat__unit"> min</span></span>
+          <span class="bigstat__label">faster intrusion detection (14 → 3 min MTTD)</span>
+        </div>
+        <div class="bigstat">
+          <span class="bigstat__value mono">+<span class="count" data-count="35">0</span><span class="bigstat__unit"> pts</span></span>
+          <span class="bigstat__label">IDS detection rate (54% → 89%)</span>
+        </div>
+        <div class="bigstat">
+          <span class="bigstat__value mono"><span class="count" data-count="92">0</span>%</span>
+          <span class="bigstat__label">fraud detection accuracy, up from 68%</span>
+        </div>
+      </div>
+
+      <div class="legend mono" aria-hidden="true">
+        <span class="legend__item"><span class="legend__swatch legend__swatch--baseline"></span>Baseline</span>
+        <span class="legend__item"><span class="legend__swatch legend__swatch--enhanced"></span>Enhanced</span>
+      </div>
+
+      <div class="charts" id="charts"><!-- charts rendered by main.js --></div>
+
+      <h3 class="sub-title mono">// Full results table</h3>
+      <div class="table-scroll">
+        <table class="btable btable--onDark">
+          <caption class="sr-only">Results summary comparing baseline and enhanced configurations</caption>
+          <thead>
+            <tr><th scope="col">Metric</th><th scope="col">Baseline</th><th scope="col">Enhanced</th><th scope="col">Improvement</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Credential attack success</td><td class="mono">30%</td><td class="mono">2%</td><td class="mono">−93%</td></tr>
+            <tr><td>Intrusion detection rate</td><td class="mono">54%</td><td class="mono">89%</td><td class="mono">+35 pts</td></tr>
+            <tr><td>Mean time to detect (MTTD)</td><td class="mono">14 min</td><td class="mono">3 min</td><td class="mono">79% faster</td></tr>
+            <tr><td>Fraud detection accuracy</td><td class="mono">68%</td><td class="mono">92%</td><td class="mono">+24 pts</td></tr>
+            <tr><td>Fraud detection time</td><td class="mono">6 min</td><td class="mono">2 min</td><td class="mono">67% faster</td></tr>
+            <tr><td>False positive rate</td><td class="mono">3%</td><td class="mono">5%</td><td class="mono">+2 pts (accepted tradeoff)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-title mono">// Risk heat map</h3>
+      <div class="table-scroll">
+        <table class="btable btable--onDark heatmap">
+          <caption class="sr-only">Risk level before and after the enhanced configuration</caption>
+          <thead>
+            <tr><th scope="col">Threat category</th><th scope="col">Baseline risk</th><th scope="col">Enhanced risk</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Account takeover</td><td><span class="risk risk--high mono">High</span></td><td><span class="risk risk--low mono">Low</span></td></tr>
+            <tr><td>Network intrusion</td><td><span class="risk risk--high mono">High</span></td><td><span class="risk risk--med mono">Med-Low</span></td></tr>
+            <tr><td>Fraudulent transactions</td><td><span class="risk risk--medhigh mono">Med-High</span></td><td><span class="risk risk--low mono">Low</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ ATT&CK ============ -->
+    <section class="section" id="attack">
+      <div class="section__head">
+        <span class="section__index mono">05</span>
+        <h2 class="section__title">ATT&amp;CK Map</h2>
+      </div>
+      <p class="section__intro">
+        Every simulated behavior corresponds to a documented MITRE ATT&amp;CK technique — and to the
+        control that shut it down. Select a card to see the matchup.
+      </p>
+      <div class="cards" id="attack-cards"><!-- cards rendered by main.js --></div>
+    </section>
+
+    <!-- ============ NIST ============ -->
+    <section class="section section--accent" id="nist">
+      <div class="section__head">
+        <span class="section__index mono">06</span>
+        <h2 class="section__title">NIST CSF Alignment</h2>
+      </div>
+      <div class="nist">
+        <div class="nist__block">
+          <h3 class="nist__fn mono">Protect</h3>
+          <p>Multi-factor authentication hardens identity at the front door — stolen credentials alone no longer open accounts.</p>
+        </div>
+        <div class="nist__block">
+          <h3 class="nist__fn mono">Detect</h3>
+          <p>IDS + SIEM correlation surfaces scanning, probing, and exploitation in minutes instead of quarters of an hour.</p>
+        </div>
+        <div class="nist__block">
+          <h3 class="nist__fn mono">Respond</h3>
+          <p>Anomaly-based fraud monitoring blocks unauthorized bets and withdrawals before funds leave the platform.</p>
+        </div>
+        <div class="nist__block">
+          <h3 class="nist__fn mono">Recover</h3>
+          <p>Centralized transaction logging supports rollback and forensic reconstruction after an incident.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TAKEAWAYS ============ -->
+    <section class="section" id="takeaways">
+      <div class="section__head">
+        <span class="section__index mono">07</span>
+        <h2 class="section__title">What It Proves</h2>
+      </div>
+      <ol class="takeaways">
+        <li>MFA is non-negotiable — it cut successful credential stuffing to 1/15th of baseline.</li>
+        <li>Detection speed is damage control: eleven minutes less dwell time is the difference between an alert and a breach.</li>
+        <li>Fraud monitoring is the last line — it catches the attacker who already got in.</li>
+        <li>Layered controls outperform any single control; attackers must beat every layer, defenders only need one to hold.</li>
+        <li>Alignment with NIST CSF and MITRE ATT&amp;CK turns raw metrics into a defensible, auditable security posture.</li>
+      </ol>
+      <div class="limits">
+        <div class="limits__col">
+          <h3 class="sub-title mono">// Limitations</h3>
+          <p>Simulated users and traffic can't fully replicate production behavior; the fraud model was statistical rather than ML-based; social engineering and MFA token interception were out of scope.</p>
+        </div>
+        <div class="limits__col">
+          <h3 class="sub-title mono">// Future work</h3>
+          <p>Machine-learning fraud models, mobile betting attack surfaces, social-engineering campaigns, and cloud-scale environments.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <footer class="footer" id="contact">
+      <h2 class="footer__title">Let's<br>Talk<span class="footer__dot">.</span></h2>
+      <div class="footer__links">
+        <a class="footer__link" href="mailto:malcolmbritt12@gmail.com">malcolmbritt12@gmail.com ↗</a>
+        <a class="footer__link" href="https://www.linkedin.com/in/malcolm-britt-b7157026a" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="footer__link" href="https://github.com/TheMDBritt" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="footer__link" href="assets/An-Analysis-of-Cybersecurity-Measures-in-Sports-Betting-Platforms.docx" download>Download the full paper ↓</a>
+      </div>
+      <p class="footer__meta mono">
+        © 2026 Malcolm D. Britt — B.S. Cybersecurity, ODU · M.S. Cybersecurity, NSU<br>
+        Capstone advisor: Dr. Kingsley Nwosu, Norfolk State University
+      </p>
+    </footer>
+
+  </main>
+
+  <div class="tooltip mono" id="tooltip" role="tooltip" hidden></div>
+  <script src="assets/main.js"></script>
+</body>
+</html>
