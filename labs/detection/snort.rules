@@ -1,0 +1,51 @@
+# =============================================================================
+# StakeLine IDS ruleset — Snort 2.9
+# Custom rules for the sports-betting lab. Loaded on the Kali monitoring VM.
+# Local rule range uses sid >= 1000000 per Snort convention.
+#
+# Variables (set in snort.conf):
+#   var HOME_NET 10.10.10.0/24
+#   var EXTERNAL_NET !$HOME_NET
+#   portvar HTTP_PORTS [80,8080]
+# =============================================================================
+
+# --- Reconnaissance: aggressive SYN port sweep (MITRE T1595) -----------------
+alert tcp $EXTERNAL_NET any -> $HOME_NET any ( \
+    msg:"STAKELINE RECON aggressive SYN port sweep"; \
+    flags:S; \
+    detection_filter:track by_src, count 20, seconds 5; \
+    classtype:attempted-recon; sid:1000021; rev:1; )
+
+# --- Credential stuffing: burst of POSTs to /login (T1110 Brute Force) --------
+alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS ( \
+    msg:"STAKELINE credential stuffing - login POST flood"; \
+    flow:to_server,established; \
+    content:"POST"; http_method; \
+    content:"/login"; http_uri; \
+    detection_filter:track by_src, count 30, seconds 10; \
+    classtype:web-application-attack; sid:1000022; rev:2; )
+
+# --- Probing: HTTP enumeration / abnormal request body -----------------------
+alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS ( \
+    msg:"STAKELINE probe - oversized login request body"; \
+    flow:to_server,established; \
+    content:"/login"; http_uri; \
+    byte_test:5,>,60000,0,relative,string,dec; \
+    classtype:web-application-attack; sid:1000023; rev:1; )
+
+# --- Session hijack attempt: cookie theft indicator (T1539) ------------------
+alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS ( \
+    msg:"STAKELINE possible session cookie exfiltration"; \
+    flow:to_server,established; \
+    content:"session="; http_cookie; \
+    pcre:"/session=[A-Fa-f0-9]{32}/H"; \
+    detection_filter:track by_src, count 5, seconds 3; \
+    classtype:attempted-user; sid:1000024; rev:1; )
+
+# --- Exfiltration over web protocol (T1041) ----------------------------------
+alert tcp $HOME_NET $HTTP_PORTS -> $EXTERNAL_NET any ( \
+    msg:"STAKELINE large outbound response - possible data exfil"; \
+    flow:from_server,established; \
+    dsize:>50000; \
+    detection_filter:track by_dst, count 3, seconds 5; \
+    classtype:policy-violation; sid:1000025; rev:1; )

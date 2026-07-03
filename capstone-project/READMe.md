@@ -128,7 +128,7 @@ Through this project, key insights included:
 
 ## 📬 Contact  
 **Email:** malcolmbritt12@gmail.com  
-**LinkedIn:** www.linkedin.com/in/malcolm-britt-b7157026a  
+**LinkedIn:** www.linkedin.com/in/malcolm-b-b7157026a  
 
 ---
 

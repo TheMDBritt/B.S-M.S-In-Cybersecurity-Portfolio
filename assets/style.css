@@ -633,3 +633,23 @@ input[type=range] { accent-color: var(--accent); width: 100%; }
   font-family: var(--font-mono); font-size: .74rem; line-height: 1.6; overflow-x: auto; color: #cfcabe;
 }
 .artifact pre .k { color: #ff6a45; } .artifact pre .s { color: #4cd97b; } .artifact pre .c { color: #777; }
+
+/* lab-kit callout + artifact source links */
+.kit-callout {
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  border: 3px solid var(--accent); background: rgba(230,46,0,.08);
+  padding: 1.25rem 1.5rem; margin-bottom: 2rem;
+}
+.kit-callout > div { flex: 1 1 20rem; }
+.kit-callout__tag {
+  display: inline-block; font-size: .68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .12em; color: var(--accent);
+  border: 2px solid var(--accent); padding: .2rem .5rem; margin-bottom: .6rem;
+}
+.kit-callout p { font-size: .95rem; color: #cfcabe; }
+.kit-callout .btn { white-space: nowrap; text-decoration: none; }
+.artifact__src {
+  display: block; padding: .7rem 1rem; background: #050505; border-top: 2px solid #333;
+  font-size: .72rem; color: #ff6a45; text-decoration: none;
+}
+.artifact__src:hover { color: var(--accent); text-decoration: underline; }
